@@ -1,0 +1,4 @@
+Requirements:
+
+- SRILM and all necessary packages, such as gcc/g++, etc.
+- NLTK
