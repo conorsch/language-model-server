@@ -7,14 +7,19 @@ Requirements
 ------------
  - [SRILM] toolkit
  - [nltk]
+ - Spiffy linguistic corpora (not included)
 
 
 Installation
 --------------
 The most complicated aspect of the installation will be compiling [SRILM]. 
-Once you have that toolkit downloaded and added to your $PATH, run the 
-```bootstrap.sh``` script to generate n-gram counts needed for the LM. 
-Then ```pip install --user -r requirements.txt``` and you're off to the races.
+Once you have that toolkit downloaded and added to your $PATH, run these commands:
+
+ 1. ```pip install --user -r requirements.txt``` to install Python dependencies.
+ 2. ```./bootstrap.sh``` to generate n-gram counts needed for the LM. 
+ 3. ```./loadlm.py``` to import ngram data into SQLite database.
+
+Steps 2 & 3 above can take 10-20 minutes, depending on hardware.
 
 #### Batteries sold separately
 Due to licensing restrictions, you will need to provide the corpora 
