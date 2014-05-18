@@ -34,6 +34,7 @@ def loadNgramsToDatabase(lmFilepath, order):
             sys.stdout.write("\rNumber of %s-grams committed to database: %s"% (str(order), str(counter)))
             sys.stdout.flush()
 
+    print("Finished loading database.")
     s.close()
 
 if __name__ == '__main__':
