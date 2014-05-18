@@ -7,8 +7,8 @@
 if ! type -P ngram-count &> /dev/null; then
     cat <<MSG
 Command 'ngram-count' not found.
-The SCRILM toolset is not installed, or is not 
-present in your PATH. See this page to install SCRILM:
+The SRILM toolset is not installed, or is not 
+present in your PATH. See this page to install SRILM:
 
 http://www.speech.sri.com/projects/srilm/download.html
 
