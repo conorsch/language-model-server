@@ -14,15 +14,16 @@ dbpath = 'sqlite:////tmp/teste.db'
 engine = create_engine(dbpath)
 Base = declarative_base(bind=engine)
 
+
 class Ngram(Base):
     __tablename__ = 'ngrams'
     id = Column(Integer, primary_key=True)
     order = Column(Integer)
     text = Column(Unicode(40))
-    lprobability = Column(Float)
-    rprobability = Column(Float)
+    conditionalProbability = Column(Float)
+    backoffWeight = Column(Float)
 
-    def __init__(self, text, n=None, lprobability=None, rprobability=None):
+    def __init__(self, text, n=None, conditionalProbability=None, backoffWeight=None):
         # Set up a default 'n' value for this ngram
         if not n:
             n = 1
@@ -30,8 +31,8 @@ class Ngram(Base):
         # Set attributes.
         self.order = int(n)
         self.n = self.order
-        self.lprobability = float(lprobability)
-        self.rprobability = float(rprobability)
+        self.conditionalProbability = float(conditionalProbability)
+        self.backoffWeight = float(backoffWeight)
         self.text = unicode(text)
 
     def __str__(self):
@@ -59,24 +60,28 @@ def getNgrams(n):
             if line.strip() == '\%s-grams:' % str(n + 1) or \
                line.strip() == '' or \
                line.strip() == '\end\\':
-                print("Finished reading %s-grams block..." % n)
+                print("\nFinished reading %s-grams block..." % n)
                 break
             # It's important to decode from UTF8 here, otherwise SQLAlchemy will toss its head.
             yield parseNgramLine(line.decode('utf-8').strip(), n=n)
 
 def parseNgramLine(line, n=None):
-    """Returns Ngram object from tab-delinated line of lpos, ngram, rpos."""
+    """Returns Ngram object from tab-delinated line of conditionalProbability, text, backoffWeight."""
 
     parts = line.split("\t")
     # Python 2.7 doesn't support partial unpacking, so let's do it the long way.
-    # Some ngram lines in the language model don't have an 'rprobability' value, 
+    # Some ngram lines in the language model don't have an 'backoffWeight' value, 
     # so make it optional.
-    (lprobability, ngramRaw), rprobability = parts[:2], parts[2:]
+    (conditionalProbability, ngramRaw), backoffWeight = parts[:2], parts[2:]
+
+    # For more information on the ngram-format, see:
+    # http://www.speech.sri.com/projects/srilm/manpages/ngram-format.5.html
 
     try:
-        rprobability = rprobability[0]
+        # Side-effect of partial unpacking means we have a list, so pop it.
+        backoffWeight = backoffWeight.pop()
     except IndexError as e:
-        rprobability = 0
+        backoffWeight = 0
 
     if not ngramRaw:
         raise Exception("Failed to find ngram in this line: %s" % line)
@@ -84,7 +89,7 @@ def parseNgramLine(line, n=None):
     if not n:
         n = len(ngramRaw.split())
 
-    return Ngram(ngramRaw, n=n, lprobability=lprobability, rprobability=rprobability)
+    return Ngram(ngramRaw, n=n, conditionalProbability=conditionalProbability, backoffWeight=backoffWeight)
 
 def loadNgramsToDatabase(n):
     """Reads in LM, exports n-grams of order n to SQLite database."""
@@ -106,8 +111,6 @@ def loadNgramsToDatabase(n):
             sys.stdout.write("\rNumber of %s-grams committed to database: %s"% (str(n), str(counter)))
             sys.stdout.flush()
 
-    sys.stdout.write("\n")
-    sys.stdout.flush()
     s.close()
 
 if __name__ == '__main__':
