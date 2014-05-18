@@ -17,22 +17,31 @@ MSG
     exit 1;
 fi
 
+# Ensure we have a corpus to work with
 testcorpus='corpus/cna_tokenized_lower.txt'
+if [[ ! -f $testcorpus ]] ; then
+    cat <<MSG
+Dataset '$testcorpus' was not found. Add it, then try again.
+MSG
+    exit 2;
+fi
+
 outputdir='output-counts'
 mkdir -p $outputdir
 
-countsfile="$outputdir/cna-ngrams-order5-default"
-languagemodel="$outputdir/cna-ngrams-order5-default.lm"
+countsfile="$outputdir/$(basename $testcorpus | perl -npe 's/(\.)(\w+)$/$1counts/')"
+languagemodel="$outputdir/$(basename $testcorpus | perl -npe 's/(\.)(\w+)$/$1lm/')"
 
-echo -n "Generating ngram counts..."
+echo "Dataset: '$testcorpus'"
+
+echo -n "Generating ngram counts ($countsfile)..."
 ngram-count -text $testcorpus -sort -write $countsfile -order 5 -unk
 echo " done."
 
-echo "Building language model..."
-ngram-count -read $countsfile \
-        -lm $languagemodel -unk
+echo "Building language model ($languagemodel)..."
+make-big-lm -read $countsfile -lm $languagemodel -name $languagemodel -order 5 -unk
 echo " done."
 
-echo "Running ngram server..."
-ngram -server-port 3433 -order 5 -debug 3 -memuse \
-        -lm $languagemodel -unk
+# Don't bother starting server
+#echo "Running ngram server..."
+#ngram -server-port 3433 -order 5 -debug 3 -memuse -lm $languagemodel -unk
