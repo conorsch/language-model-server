@@ -20,7 +20,6 @@ def loadNgramsToDatabase(lmFilepath, order):
         counter += 1
         
         if counter % 10000 == 0:
-            db.session.flush()
             db.session.commit()
             sys.stdout.write("\rNumber of %s-grams committed to database: %s"% (str(order), str(counter)))
             sys.stdout.flush()
