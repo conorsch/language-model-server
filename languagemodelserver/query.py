@@ -2,18 +2,8 @@
 from __future__ import print_function
 import sys
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-
 from ngram import Ngram, db
 
-
-engine = create_engine('sqlite:////tmp/teste.db')
-
-print("Opening session handle on database...")
-Session = sessionmaker(bind=engine)
-s = Session()
 
 print("Creating tables in database...")
 db.create_all()
