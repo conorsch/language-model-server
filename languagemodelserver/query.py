@@ -2,7 +2,7 @@
 from __future__ import print_function
 import sys
 
-from ngram import Ngram, db
+from ngram import Ngram
 
 print("Running ngram query for ALL ngrams...")
 ngrams = Ngram.query.yield_per(20)
