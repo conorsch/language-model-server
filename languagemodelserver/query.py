@@ -4,12 +4,8 @@ import sys
 
 from ngram import Ngram, db
 
-
-print("Creating tables in database...")
-db.create_all()
-
 print("Running ngram query for ALL ngrams...")
-ngrams = Ngram.query.all()
+ngrams = Ngram.query.yield_per(20)
 print(ngrams)
 for n in ngrams:
     print(n)
