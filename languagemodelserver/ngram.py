@@ -1,21 +1,21 @@
-#!/usr/bin/env python
 from __future__ import print_function
 import sys
-from sqlalchemy import Column, Integer, Unicode, Float
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 from textwrap import dedent
 
-Base = declarative_base()
+from flask import Flask
+from flask.ext.sqlalchemy import SQLAlchemy
 
-class Ngram(Base):
-    __tablename__ = 'ngrams'
-    id = Column(Integer, primary_key=True)
-    order = Column(Integer)
-    text = Column(Unicode(40))
-    conditionalProbability = Column(Float)
-    backoffWeight = Column(Float)
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/teste.db'
+db = SQLAlchemy(app)
+
+
+class Ngram(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    order = db.Column(db.Integer)
+    text = db.Column(db.Unicode(40))
+    conditionalProbability = db.Column(db.Float)
+    backoffWeight = db.Column(db.Float)
 
     def __init__(self, text, n=None, conditionalProbability=None, backoffWeight=None):
         # Set up a default 'n' value for this ngram
