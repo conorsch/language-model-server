@@ -17,7 +17,7 @@ Once you have that toolkit downloaded and added to your $PATH, run these command
 
  1. ```pip install --user -r requirements.txt``` to install Python dependencies.
  2. ```./bootstrap.sh``` to generate n-gram counts needed for the LM. 
- 3. ```./loadlm.py``` to import ngram data into SQLite database.
+ 3. ```./languagemodel/loadlm.py``` to import ngram data into SQLite database.
 
 Steps 2 & 3 above can take 10-20 minutes, depending on hardware.
 
