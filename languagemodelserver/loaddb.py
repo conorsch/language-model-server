@@ -28,4 +28,8 @@ def loadNgramsToDatabase(lmFilepath, order):
 if __name__ == '__main__':
     testlm = 'output-counts/cna_tokenized_lower.lm'
     n = 2
+
+    # Necessary to create tables before inserting
+    db.create_all()
+
     loadNgramsToDatabase(testlm, n)
