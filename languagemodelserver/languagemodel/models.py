@@ -4,7 +4,7 @@ from django.db import models
 
 class Ngram(models.Model):
     order = models.IntegerField()
-    text = models.CharField(maxlength=1000)
+    text = models.CharField(max_length=1000)
     conditionalProbability = models.FloatField()
     backoffWeight = models.FloatField()
 
