@@ -17,9 +17,19 @@ Once you have that toolkit downloaded and added to your $PATH, run these command
 
  1. ```pip install --user -r requirements.txt``` to install Python dependencies.
  2. ```./bootstrap.sh``` to generate n-gram counts needed for the LM. 
- 3. ```./languagemodel/loadlm.py``` to import ngram data into SQLite database.
+ 3. ```python manage.py loadNgrams``` to import ngram data into SQLite database (only bigrams right now)
 
-Steps 2 & 3 above can take 10-20 minutes, depending on hardware.
+Steps 3 above can take hours, depending on hardware. 
+Using a batch size of 1000 per database commit:
+
+```
+$ time python manage.py importNgrams
+
+Inserting ngrams into database...
+Found start of 2-grams block...
+Number of 2-grams committed to database: 284000 # this operation never finished
+
+```
 
 #### Batteries sold separately
 Due to licensing restrictions, you will need to provide the corpora 
