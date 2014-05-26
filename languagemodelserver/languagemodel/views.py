@@ -10,3 +10,4 @@ class NgramViewSet(viewsets.ModelViewSet):
     """
     queryset = Ngram.objects.all()
     serializer_class = NgramSerializer
+    paginate_by = 100
