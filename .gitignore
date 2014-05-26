@@ -1,0 +1,6 @@
+corpus/*
+Session.vim
+output-counts/*
+*.pyc
+venv/*
+db.sqlite3*

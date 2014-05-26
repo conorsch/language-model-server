@@ -1,1 +1,4 @@
+Django
 SQLAlchemy>=0.9.3
+Flask-SQLAlchemy
+dse
