@@ -18,6 +18,7 @@ Once you have that toolkit downloaded and added to your $PATH, run these command
  1. ```pip install --user -r requirements.txt``` to install Python dependencies.
  2. ```./bootstrap.sh``` to generate n-gram counts needed for the LM. 
  3. ```python manage.py importNgrams``` to import ngram data into SQLite database (only bigrams right now)
+ 4. ```python manage.py runserver [::]:8000``` to run the API server for ngram queries
 
 Step 3 above can take a few minutes, depending on hardware. 
 Using a batch size of 10000 per database commit:
