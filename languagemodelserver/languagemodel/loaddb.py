@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 from __future__ import print_function
-
-import models
+import sys
+sys.path.append('/home/conor/language-model-server')
 from django.db import transaction
+import models
 from models import Ngram
 
 
@@ -27,7 +28,7 @@ def loadNgramsToDatabase(lmFilepath, order):
     transaction.commit()
 
 if __name__ == '__main__':
-    testlm = 'output-counts/cna_tokenized_lower.lm'
+    testlm = '/home/conor/gits/language-model-server/output-counts/cna_tokenized_lower.lm'
     n = 2
 
     loadNgramsToDatabase(testlm, n)
