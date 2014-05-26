@@ -8,17 +8,14 @@ class Ngram(models.Model):
     conditionalProbability = models.FloatField()
     backoffWeight = models.FloatField()
 
-    def __init__(self, text, n=None, conditionalProbability=None, backoffWeight=None):
+    @classmethod
+    def create(cls, text, n=None, conditionalProbability=None, backoffWeight=None):
         # Set up a default 'n' value for this ngram
         if not n:
             n = 1
 
-        # Set attributes.
-        self.order = int(n)
-        self.n = self.order
-        self.conditionalProbability = float(conditionalProbability)
-        self.backoffWeight = float(backoffWeight)
-        self.text = unicode(text)
+        ngram = Ngram(text, n=None, conditionalProbability=None, backoffWeight=None)
+        return ngram
 
     def __str__(self):
         representation = dedent("""\
@@ -74,4 +71,4 @@ def parseNgramLine(line, n=None):
     if not n:
         n = len(ngramRaw.split())
 
-    return Ngram(ngramRaw, n=n, conditionalProbability=conditionalProbability, backoffWeight=backoffWeight)
+    return ngramRaw, {'n': n, 'conditionalProbability': conditionalProbability, 'backoffWeight': backoffWeight}
