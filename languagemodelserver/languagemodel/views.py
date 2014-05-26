@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.db.models import Ngram
+from models import Ngram
 from rest_framework import viewsets
 from serializers import NgramSerializer
 
