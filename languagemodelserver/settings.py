@@ -54,7 +54,6 @@ ROOT_URLCONF = 'languagemodelserver.urls'
 WSGI_APPLICATION = 'languagemodelserver.wsgi.application'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
     'PAGINATE_BY': 10
 }
 
