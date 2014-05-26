@@ -65,3 +65,11 @@ yourself. We're working on using fully open corpora in the future.
 [SRILM]:http://www.speech.sri.com/projects/srilm/download.html
 [nltk]:http://www.nltk.org/
 
+TODO
+----
+ - implement django-rest-framework for API 
+ - write tests (damn it)
+ - investigate open source LMs
+   - nltk for initial corpus
+   - nltk for ngramModel?
+   - kenLM for ngramModel?
