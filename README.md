@@ -19,16 +19,42 @@ Once you have that toolkit downloaded and added to your $PATH, run these command
  2. ```./bootstrap.sh``` to generate n-gram counts needed for the LM. 
  3. ```python manage.py loadNgrams``` to import ngram data into SQLite database (only bigrams right now)
 
-Steps 3 above can take hours, depending on hardware. 
-Using a batch size of 1000 per database commit:
+Step 3 above can take a few minutes, depending on hardware. 
+Using a batch size of 10000 per database commit:
 
 ```
 $ time python manage.py importNgrams
 
+Extracting ngram args from flat file...
 Inserting ngrams into database...
 Found start of 2-grams block...
-Number of 2-grams committed to database: 284000 # this operation never finished
+Number of 2-grams committed to database: 33060000
+Finished reading 2-grams block...
+Finished loading database.
 
+real    3m48.216s
+user    3m44.028s
+sys     0m3.522s
+```
+
+However, generating fixtures via `dumpdata` takes considerably longer:
+```
+$ time python manage.py dumpdata --indent=4 > fixtures/2grams.json
+
+real    29m51.253s
+user    29m22.105s
+sys     0m22.366s
+```
+Generating them via a custom command is much faster, though:
+```
+$ time python manage.py generateNgramFixtures 
+
+Generating fixtures from ngrams in database...
+Finished generating fixtures.
+
+real    16m6.369s
+user    15m47.030s
+sys     0m14.472s
 ```
 
 #### Batteries sold separately
