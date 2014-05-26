@@ -1,16 +1,13 @@
 #!/usr/bin/env python
 from __future__ import print_function
-import sys
-import ngram
 
-from ngram import Ngram, db
-
+from models import Ngram
 
 def loadNgramsToDatabase(lmFilepath, order):
     """Reads in LM, exports n-grams of order n to SQLite database."""
 
     print("Inserting ngrams into database...")
-    ngrams = ngram.getNgrams(lmFilepath, order)
+    ngrams = Ngram.getNgrams(lmFilepath, order)
     counter = 0
     for n in ngrams:
         db.session.add(n)
