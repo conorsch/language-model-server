@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 class Ngram(models.Model):
     order = models.IntegerField()
     text = models.CharField(max_length=1000)
@@ -71,4 +69,4 @@ def parseNgramLine(line, n=None):
     if not n:
         n = len(ngramRaw.split())
 
-    return ngramRaw, {'n': n, 'conditionalProbability': conditionalProbability, 'backoffWeight': backoffWeight}
+    return {'text': ngramRaw, 'order': n, 'conditionalProbability': conditionalProbability, 'backoffWeight': backoffWeight}
