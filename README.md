@@ -3,6 +3,8 @@ language-model-server
 
 Inspired by ([Madnani, 2009]), this project tries to implement a queryable server for an English language model of variable n-gram order. 
 
+![Ngram detail view screenshot](https://raw.githubusercontent.com/ronocdh/language-model-server/rest-api-docs/docs/img/ngram-single-view.png "Optional title")
+
 Requirements
 ------------
  - [SRILM] toolkit
@@ -17,9 +19,11 @@ Once you have that toolkit downloaded and added to your $PATH, run these command
 
  1. ```pip install --user -r requirements.txt``` to install Python dependencies.
  2. ```./bootstrap.sh``` to generate n-gram counts needed for the LM. 
- 3. ```python manage.py importNgrams``` to import ngram data into SQLite database (only bigrams right now)
+ 3. ```python manage.py syncdb``` to configure the database
+ 4. ```python manage.py importNgrams``` to import ngram data into SQLite database (only bigrams right now)
+ 5. ```python manage.py runserver [::]:8000``` to run the API server for ngram queries
 
-Step 3 above can take a few minutes, depending on hardware. 
+Step 4 above can take a few minutes, depending on hardware.
 Using a batch size of 10000 per database commit:
 
 ```
@@ -67,7 +71,7 @@ yourself. We're working on using fully open corpora in the future.
 
 TODO
 ----
- - implement django-rest-framework for API 
+ - expand API with params for querying
  - write tests (damn it)
  - investigate open source LMs
    - nltk for initial corpus

@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '+*t*tg%g)l8^0(wek8^1l7b#x9wyu=gwh%5+59l7ib_4@yom%('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = True
 
@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
     'languagemodelserver.languagemodel',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,6 +53,9 @@ ROOT_URLCONF = 'languagemodelserver.urls'
 
 WSGI_APPLICATION = 'languagemodelserver.wsgi.application'
 
+REST_FRAMEWORK = {
+    'PAGINATE_BY': 10
+}
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
