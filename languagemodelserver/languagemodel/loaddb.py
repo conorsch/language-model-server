@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from __future__ import print_function
 import sys
-sys.path.append('/home/conor/language-model-server')
+sys.path.append('/home/mulhod/Dropbox/Docs/corpora/grammatical_error_detection_shared_task_2013/language-model-server')
 from django.db import transaction
 import models
 from models import Ngram
@@ -28,7 +28,7 @@ def loadNgramsToDatabase(lmFilepath, order):
     transaction.commit()
 
 if __name__ == '__main__':
-    testlm = '/home/conor/gits/language-model-server/output-counts/cna_tokenized_lower.lm'
+    testlm = '/media/mulhod/Windows7_OS/Users/win-mulhod/Documents/gigaword/cna-ngrams-order5-counts/cna-ngrams-order5-default.lm'
     n = 2
 
     loadNgramsToDatabase(testlm, n)

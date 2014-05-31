@@ -12,7 +12,8 @@ class Command(NoArgsCommand):
     def handle_noargs(self, **options):
         # now do the things that you want with your models here
         baseDir = settings.BASE_DIR
-        lmFilepath = os.path.join(baseDir, 'output-counts', 'cna_tokenized_lower.lm')
+        #lmFilepath = os.path.join(baseDir, 'output-counts', 'cna_tokenized_lower.lm')
+        lmFilepath = '/media/mulhod/Windows7_OS/Users/win-mulhod/Documents/gigaword/cna-ngrams-order5-counts/cna-ngrams-order5-default.lm'
         order = 2
         counter = 0
         print("Extracting ngram args from flat file...")
