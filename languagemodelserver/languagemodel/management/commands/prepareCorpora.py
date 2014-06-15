@@ -3,7 +3,7 @@ from django.core.management.base import NoArgsCommand
 import languagemodelserver.settings as settings
 import os
 import string
-import subprocess
+from subprocess import Popen, PIPE
 
 import nltk
 
@@ -21,19 +21,14 @@ class Command(NoArgsCommand):
             for tokens in b.sents():
                 s = "".join([" "+i if not i.startswith("'") and i not in string.punctuation else i for i in tokens]).strip()
                 f.write(s+"\n")
-
         print("done.")
-
         
         print("Generating ngram counts (%s)... " % countsFile, end="")
-        ngramCommand = "ngram-count -text %s -sort -write %s -order %s -unk" % (corpusSentences, countsFile, settings.NGRAM_ORDER)
-        subprocess.check_call(ngramCommand.split())
+        ngramCommand = "/usr/bin/env ngram-count -text %s -sort -write %s -order %s -unk" % (corpusSentences, countsFile, settings.NGRAM_ORDER)
+        Popen(ngramCommand.split(), stdout=PIPE, stderr=PIPE).communicate()
         print("done.")
 
         print("Building language model (%s)... " % lmFilepath, end="")
-        lmCommand = "make-big-lm -read %s -lm %s -name %s -order %s -unk" % (countsFile, lmFilepath, lmFilepath, settings.NGRAM_ORDER)
-        subprocess.check_call(lmCommand.split())
+        lmCommand = "/usr/bin/env make-big-lm -read %s -lm %s -name %s -order %s -unk" % (countsFile, lmFilepath, lmFilepath, settings.NGRAM_ORDER)
+        Popen(lmCommand.split(), stdout=PIPE, stderr=PIPE).communicate()
         print("done.")
-
-
-
