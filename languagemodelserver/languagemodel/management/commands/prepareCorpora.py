@@ -12,6 +12,7 @@ class Command(NoArgsCommand):
         b = nltk.corpus.brown
         corpusName = 'brown'
         corpusSentences = os.path.join(settings.BASE_DIR, 'corpus', corpusName+'_sentences')
+        countsFile = os.path.join(settings.BASE_DIR, 'corpus', corpusName+'_counts')
 
         print("Dumping raw sentences from '%s' corpus... " % corpusName, end="")
         with open(corpusSentences, 'wb') as f:
@@ -21,4 +22,15 @@ class Command(NoArgsCommand):
 
         print("done.")
 
-
+        
+#        print("Generating ngram counts (%s)... " % countsFile)
+#
+#        ngram-count -text $testcorpus -sort -write $countsfile -order 5 -unk
+#        echo " done."
+#
+#        echo "Building language model ($languagemodel)..."
+#        make-big-lm -read $countsfile -lm $languagemodel -name $languagemodel -order 5 -unk
+#        echo " done."
+#
+#
+#
