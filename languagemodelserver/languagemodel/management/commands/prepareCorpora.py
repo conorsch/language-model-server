@@ -26,12 +26,12 @@ class Command(NoArgsCommand):
 
         
         print("Generating ngram counts (%s)... " % countsFile, end="")
-        ngramCommand = "ngram-count -text %s -sort -write %s -order 5 -unk" % (corpusSentences, countsFile)
+        ngramCommand = "ngram-count -text %s -sort -write %s -order %s -unk" % (corpusSentences, countsFile, settings.NGRAM_ORDER)
         subprocess.check_call(ngramCommand.split())
         print("done.")
 
         print("Building language model (%s)... " % lmFilepath, end="")
-        lmCommand = "make-big-lm -read %s -lm %s -name %s -order 5 -unk" % (countsFile, lmFilepath, lmFilepath)
+        lmCommand = "make-big-lm -read %s -lm %s -name %s -order %s -unk" % (countsFile, lmFilepath, lmFilepath, settings.NGRAM_ORDER)
         subprocess.check_call(lmCommand.split())
         print("done.")
 
