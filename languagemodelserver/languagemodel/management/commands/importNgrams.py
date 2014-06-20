@@ -11,14 +11,12 @@ dse.ITEM_LIMIT = 10000
 class Command(NoArgsCommand):
     def handle_noargs(self, **options):
         # now do the things that you want with your models here
-        lmFilepath = os.path.join(settings.BASE_DIR, 'corpus', 'brown.lm')
+        lmFilepath = os.path.join(settings.BASE_DIR, 'corpus', 'nltk-combined.lm')
         orders = range(1, settings.NGRAM_ORDER+1)
 
-        print("Extracting ngram args from flat file...")
         for order in orders:
             ngramArgs = getNgrams(lmFilepath, order)
             counter = 0
-            print("Inserting ngrams into database...")
 
             with transaction.commit_on_success():
                 with Ngram.delayed as d:
@@ -28,5 +26,8 @@ class Command(NoArgsCommand):
                         if counter % 1000 == 0:
                             sys.stdout.write("\rNumber of %s-grams committed to database: %s"% (str(order), str(counter)))
                             sys.stdout.flush()
+
+            sys.stdout.write("\n")
+            sys.stdout.flush()
             
         print("Finished loading database.")

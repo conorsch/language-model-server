@@ -1,4 +1,5 @@
 from django.db import models
+import codecs
 
 class Ngram(models.Model):
     order = models.IntegerField()
@@ -15,10 +16,10 @@ class Ngram(models.Model):
         ngram = Ngram(text, n=None, conditionalProbability=None, backoffWeight=None)
         return ngram
 
-    def __str__(self):
+    def __repr__(self):
         representation = dedent("""\
-            %(order)sgram: %(text)s
-            Order: %(order)s
+            %(order)rgram: %(text)r
+            Order: %(order)r
             """ % {
                 'order': self.order,
                 'text': self.text,
@@ -28,22 +29,26 @@ class Ngram(models.Model):
 
 def getNgrams(filepath, n):
     """Returns all ngrams in corpus of order 'n'."""
+    counter = 0
 
-    with open(filepath, 'r') as f:
+    # For some mad reason, SRILM writes out LM files 
+    # as ISO-8859, rather than UTF-8, so we need to 
+    # convert that to unicode()s. We'll use 'codecs' 
+    # to do that.
+    with codecs.open(filepath, 'r', 'ISO-8859-1') as f:
         for line in f:
             # Wait for start of ngram block for order n
             if line.strip() == "\%s-grams:" % n:
-                print("Found start of %s-grams block..." % n)
                 break
+
         for line in f:
             # Check if we've read to the end of this ngram block
             if line.strip() == '\%s-grams:' % str(n + 1) or \
                line.strip() == '' or \
                line.strip() == '\end\\':
-                print("\nFinished reading %s-grams block..." % n)
                 break
-            # It's important to decode from UTF8 here, otherwise SQLAlchemy will toss its head.
-            yield parseNgramLine(line.decode('utf-8').strip(), n=n)
+            # We already have a unicode object, SQLAlchemy will be happy
+            yield parseNgramLine(line.strip(), n=n)
 
 def parseNgramLine(line, n=None):
     """Returns Ngram object from tab-delinated line of conditionalProbability, text, backoffWeight."""
