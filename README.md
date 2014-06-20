@@ -9,8 +9,6 @@ Requirements
 ------------
  - [SRILM] toolkit
  - [nltk]
- - Spiffy linguistic corpora (not included)
-
 
 Installation
 --------------
@@ -18,52 +16,32 @@ The most complicated aspect of the installation will be compiling [SRILM].
 Once you have that toolkit downloaded and added to your $PATH, run these commands:
 
  1. ```pip install --user -r requirements.txt``` to install Python dependencies.
- 2. ```./bootstrap.sh``` to generate n-gram counts needed for the LM. 
- 3. ```python manage.py syncdb``` to configure the database
- 4. ```python manage.py importNgrams``` to import ngram data into SQLite database (only bigrams right now)
- 5. ```python manage.py runserver [::]:8000``` to run the API server for ngram queries
+ 2. ```./bootstrap.sh``` to build LM and load database
+ 3. ```python manage.py runserver [::]:8000``` to run the API server for ngram queries
 
-Step 4 above can take a few minutes, depending on hardware.
-Using a batch size of 10000 per database commit:
+Step 2 above can take a few minutes, depending on hardware.
+Using a batch size of 1000 per database commit:
 
 ```
-$ time python manage.py importNgrams
+$ time ./bootstrap.sh
 
-Extracting ngram args from flat file...
-Inserting ngrams into database...
-Found start of 2-grams block...
-Number of 2-grams committed to database: 33060000
-Finished reading 2-grams block...
+Creating tables ...
+Installing custom SQL ...
+Installing indexes ...
+Installed 0 object(s) from 0 fixture(s)
+Generating countfile from corpus 8/8 ('combined')...            
+Building language model (/home/conor/gits/language-model-server/corpus/nltk-combined.lm)... done.
+Number of 1-grams committed to database: 223000
+Number of 2-grams committed to database: 1795000
+Number of 3-grams committed to database: 445000
+Number of 4-grams committed to database: 287000
+Number of 5-grams committed to database: 176000
 Finished loading database.
 
-real    3m48.216s
-user    3m44.028s
-sys     0m3.522s
+real    2m36.424s
+user    2m31.558s
+sys     0m3.919s
 ```
-
-However, generating fixtures via `dumpdata` takes considerably longer:
-```
-$ time python manage.py dumpdata --indent=4 > fixtures/2grams.json
-
-real    29m51.253s
-user    29m22.105s
-sys     0m22.366s
-```
-Generating them via a custom command is much faster, though:
-```
-$ time python manage.py generateNgramFixtures 
-
-Generating fixtures from ngrams in database...
-Finished generating fixtures.
-
-real    16m6.369s
-user    15m47.030s
-sys     0m14.472s
-```
-
-#### Batteries sold separately
-Due to licensing restrictions, you will need to provide the corpora 
-yourself. We're working on using fully open corpora in the future.
 
 [Madnani, 2009]:http://ojs.pythonpapers.org/index.php/tppsc/article/view/83
 [SRILM]:http://www.speech.sri.com/projects/srilm/download.html
@@ -74,6 +52,4 @@ TODO
  - expand API with params for querying
  - write tests (damn it)
  - investigate open source LMs
-   - nltk for initial corpus
-   - nltk for ngramModel?
    - kenLM for ngramModel?
