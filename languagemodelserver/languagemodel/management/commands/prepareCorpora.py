@@ -14,6 +14,7 @@ class Command(NoArgsCommand):
     def handle_noargs(self, **options):
 
         corporaWhitelist = "brown treebank gutenberg reuters state_union inaugural timit conll2000".split()
+        corporaWhitelist.sort()
         counter = 0
         for c in corporaWhitelist:
             counter += 1
