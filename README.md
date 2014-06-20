@@ -49,7 +49,11 @@ sys     0m3.919s
 
 TODO
 ----
- - expand API with params for querying
  - write tests (damn it)
+ - expand API with params for querying
  - investigate open source LMs
    - kenLM for ngramModel?
+ - investigate factored language model setup
+   - SRILM has a built-in for this
+ - upgrade SRILM to newest version
+ - consider breaking out custom lm as python lib
