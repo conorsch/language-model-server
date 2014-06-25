@@ -8,6 +8,6 @@ class Command(NoArgsCommand):
     def handle_noargs(self, **options):
         sys.stdout.write("Downloading all NLTK corpora... ")
         sys.stdout.flush()
-        nltk.download('all-corpora', quiet=True)
+        nltk.download(['all-corpora', 'punkt'], quiet=True, download_dir="/home/vagrant/.nltk_data")
         sys.stdout.write("done.\n")
         sys.stdout.flush()

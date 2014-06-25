@@ -6,6 +6,7 @@ import sys
 import string
 import re
 from subprocess import check_call, PIPE
+import platform
 
 import nltk
 
@@ -76,7 +77,9 @@ class Command(NoArgsCommand):
 
         countsFilepath = os.path.join(self.countsDir, corpus.name)
 
-        ngramCommand = "/usr/bin/env ngram-count -text %s -sort -write %s -order %s -unk" % (sentencesFilepath, countsFilepath, settings.NGRAM_ORDER)
+        ngramCountExecutable = os.path.join(os.environ['SRILM'], 'bin', platform.machine(), 'ngram-count')
+
+        ngramCommand = "%s -count -text %s -sort -write %s -order %s -unk" % (ngramCountExecutable, sentencesFilepath, countsFilepath, settings.NGRAM_ORDER)
         check_call(ngramCommand.split(), stdout=PIPE, stderr=PIPE)
 
     def writeLM(self):
@@ -92,7 +95,9 @@ class Command(NoArgsCommand):
 
         sys.stdout.write("Building language model (%s)... " % lmFilepath)
         sys.stdout.flush()
-        lmCommand = "/usr/bin/env make-big-lm %s -lm %s -name %s -order %s -unk" % (readArgs, lmFilepath, lmFilepath, settings.NGRAM_ORDER)
+
+        lmExecutable = os.path.join(os.environ['SRILM'], 'bin', 'make-big-lm')
+        lmCommand = "%s %s -lm %s -name %s -order %s -unk" % (lmExecutable, readArgs, lmFilepath, lmFilepath, settings.NGRAM_ORDER)
         check_call(lmCommand.split(), stdout=PIPE, stderr=PIPE)
 
         sys.stdout.write("done.\n")
