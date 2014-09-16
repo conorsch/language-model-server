@@ -18,7 +18,9 @@ class Command(NoArgsCommand):
             ngramArgs = getNgrams(lmFilepath, order)
             counter = 0
 
-            with transaction.commit_on_success():
+            # commit_on_success() is deprecated in Django 1.7
+            # with transaction.commit_on_success():
+            with transaction.atomic():
                 with Ngram.delayed as d:
                     for n in ngramArgs:
                         counter += 1
